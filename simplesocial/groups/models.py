@@ -1,4 +1,4 @@
-from django.db import models
+Mfrom django.db import models
 from django.utils.text import slugify
 import misaka
 from django.contrib.auth import get_user_model
