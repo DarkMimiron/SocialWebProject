@@ -1,15 +1,17 @@
 from django.shortcuts import render
 from django.contrib import messages
-from django.contrib.auth.mixins import (LoginRequieredMixin,
-                                        PermissionRequieredMixin)
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
+from django.db import IntegrityError
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.shortcuts import get_object_or_404
 
 from groups.models import Group, GroupMember
+from . import models
 
 # Create your views here.
-class CreateGroup(LoginRequieredMixin, generic.CreateView):
+class CreateGroup(LoginRequiredMixin, generic.CreateView):
     fields = ("name", "description")
     model = Group
 
@@ -19,7 +21,7 @@ class SingleGroup(generic.DetailView):
 class ListGroups(generic.ListView):
     model = Group
 
-class JoinGroup(LoginRequieredMixin, generic.RedirectView):
+class JoinGroup(LoginRequiredMixin, generic.RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         return reverse('groups:single', kwargs={'slug':self.kwargs.get('slug')})
 
@@ -33,7 +35,7 @@ class JoinGroup(LoginRequieredMixin, generic.RedirectView):
             messages.success(self.request, 'You are now a member!')
         return super().get(request, *args, **kwargs)
 
-class LeaveGroup(LoginRequieredMixin, generic.RedirectView):
+class LeaveGroup(LoginRequiredMixin, generic.RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         return reverse('groups:single', kwargs={'slug':self.kwargs.get('slug')})
 
