@@ -1,4 +1,4 @@
-Mfrom django.db import models
+from django.db import models
 from django.utils.text import slugify
 import misaka
 from django.contrib.auth import get_user_model
@@ -9,10 +9,10 @@ User = get_user_model()
 register = template.Library()
 
 class Group(models.Model):
-    name = modelsCharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(allow_unicode=True, unique=True)
     description = models.TextField(blank=True, default="")
-    description_html = models.TextField(blank=True, default="", blank=True)
+    description_html = models.TextField(blank=True, default="")
     members = models.ManyToManyField(User, through="GroupMember")
 
     def __str__(self):
